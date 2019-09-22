@@ -35,6 +35,7 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView.setAdapter(mAdapter);
     }
 
+    // replace? DefaultCrimeHolder and PoliceCrimeHolder extends CrimeHolder, CrimeHolder extends RecyclerView.ViewHolder
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Crime mCrime;
@@ -42,8 +43,8 @@ public class CrimeListFragment extends Fragment {
         private TextView mTitleTextView;
         private TextView mDateTextView;
 
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
+        public CrimeHolder(LayoutInflater inflater, ViewGroup parent, int listItemResource) {
+            super(inflater.inflate(listItemResource, parent, false));
 
             itemView.setOnClickListener(this);
 
@@ -66,6 +67,8 @@ public class CrimeListFragment extends Fragment {
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
 
+        private static final int REQUIRES_POLICE = 1;
+
         private List<Crime> mCrimes;
 
         public CrimeAdapter(List<Crime> crimes) {
@@ -75,7 +78,11 @@ public class CrimeListFragment extends Fragment {
         @Override
         public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new CrimeHolder(layoutInflater, parent);
+
+            if (viewType == REQUIRES_POLICE) {
+                return new CrimeHolder(layoutInflater, parent, R.layout.list_item_crime_police);
+            }
+            return new CrimeHolder(layoutInflater, parent, R.layout.list_item_crime);
         }
 
         @Override
@@ -87,6 +94,15 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            Crime crime = mCrimes.get(position);
+            if (crime.doesRequirePolice()) {
+                return REQUIRES_POLICE;
+            }
+            return 0;
         }
     }
 }
