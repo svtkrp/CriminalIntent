@@ -16,8 +16,11 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
 
+    private static int NO_UPDATED_ITEMS = -1;
+
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mUpdatedItemPosition = NO_UPDATED_ITEMS;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,10 +46,15 @@ public class CrimeListFragment extends Fragment {
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.notifyDataSetChanged();
+            return;
         }
 
+        if (mUpdatedItemPosition == NO_UPDATED_ITEMS) {
+            mAdapter.notifyDataSetChanged();
+        } else {
+            mAdapter.notifyItemChanged(mUpdatedItemPosition);
+            mUpdatedItemPosition = NO_UPDATED_ITEMS;
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,6 +84,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
+            mUpdatedItemPosition = getAdapterPosition();
+
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
