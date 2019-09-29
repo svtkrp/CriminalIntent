@@ -86,7 +86,7 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View view) {
             mUpdatedItemPosition = getAdapterPosition();
 
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
     }
