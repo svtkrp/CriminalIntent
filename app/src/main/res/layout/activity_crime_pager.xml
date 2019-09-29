@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/crime_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"/>
+        android:layout_height="match_parent" />
 
     <Button
         android:id="@+id/first_crime_button"
@@ -17,8 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/first_crime_button"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/last_crime_button"
@@ -26,7 +25,6 @@
         android:layout_height="wrap_content"
         android:text="@string/last_crime_button"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
