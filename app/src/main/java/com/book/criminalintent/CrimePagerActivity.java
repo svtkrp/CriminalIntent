@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +20,9 @@ public class CrimePagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
+
+    private Button mFirstCrimeButton;
+    private Button mLastCrimeButton;
 
     public static Intent newIntent (Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
@@ -50,11 +55,50 @@ public class CrimePagerActivity extends AppCompatActivity {
             }
         });
 
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getId().equals(crimeId)) {
-                mViewPager.setCurrentItem(i);
+        mFirstCrimeButton = findViewById(R.id.first_crime_button);
+        mFirstCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0);
+            }
+        });
+
+        mLastCrimeButton = findViewById(R.id.last_crime_button);
+        mLastCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mCrimes.size() - 1);
+            }
+        });
+
+        for (int position = 0; position < mCrimes.size(); position++) {
+            if (mCrimes.get(position).getId().equals(crimeId)) {
+                mViewPager.setCurrentItem(position);
+                if (position == 0) {
+                    mFirstCrimeButton.setEnabled(false);
+                }
+                if (position == mCrimes.size() - 1) {
+                    mLastCrimeButton.setEnabled(false);
+                }
                 break;
             }
         }
+
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position == 0) {
+                    mFirstCrimeButton.setEnabled(false);
+                } else {
+                    mFirstCrimeButton.setEnabled(true);
+                }
+                if (position == mCrimes.size() - 1) {
+                    mLastCrimeButton.setEnabled(false);
+                } else {
+                    mLastCrimeButton.setEnabled(true);
+                }
+            }
+        });
     }
 }
