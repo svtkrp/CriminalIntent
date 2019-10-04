@@ -60,14 +60,14 @@ public class CrimeListFragment extends Fragment {
             itemView.setOnClickListener(this);
 
             mTitleTextView = itemView.findViewById(R.id.crime_title);
-            mDateTextView = itemView.findViewById(R.id.crime_date);
+            mDateTextView = itemView.findViewById(R.id.crime_date_date);
             mSolvedImageView = itemView.findViewById(R.id.crime_solved);
         }
 
         public void bind(Crime crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
-            mDateTextView.setText(DateFormat.format("EEEE, MMM d, yyyy", mCrime.getDate()));
+            mDateTextView.setText(DateFormat.format("EEEE, MMM d, yyyy, 'at' HH:mm", mCrime.getDate()));
             mSolvedImageView.setVisibility(mCrime.isSolved() ? View.VISIBLE : View.GONE);
         }
 
