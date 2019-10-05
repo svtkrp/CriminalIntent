@@ -8,4 +8,12 @@
     <string name="last_crime_button">Last</string>
     <string name="date_picker_title">Date of crime:</string>
     <string name="time_picker_title">Time of crime:</string>
+
+    <string-array name="times">
+        <item>Early morning</item>
+        <item>Late morning</item>
+        <item>Early afternoon</item>
+        <item>Late afternoon</item>
+        <item>Pick a time...</item>
+    </string-array>
 </resources>

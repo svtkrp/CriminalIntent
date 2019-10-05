@@ -39,13 +39,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/crime_date_time"/>
 
-    <Button
+    <Spinner
         android:id="@+id/crime_date_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/crime_details_label"
         app:layout_constraintLeft_toRightOf="@id/crime_date_date"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/crime_date_date"/>
 
     <CheckBox
         android:id="@+id/crime_solved"

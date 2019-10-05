@@ -1,6 +1,7 @@
 package com.book.criminalintent;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,16 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,10 +36,17 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_TIME = 1;
 
+    private static final int[] HOURS = {8, 12, 15, 17};
+
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
-    private Button mTimeButton;
+
+    private Spinner mTimeSpinner;
+    private AdapterWithCustomItem mTimeAdapter;
+    private String[] mTimes;
+    private boolean mTimeItemWasClicked = false;
+
     private CheckBox mSolvedCheckBox;
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -74,7 +87,12 @@ public class CrimeFragment extends Fragment {
         });
 
         mDateButton = view.findViewById(R.id.crime_date_date);
-        mTimeButton = view.findViewById(R.id.crime_date_time);
+
+        mTimes = getResources().getStringArray(R.array.times);
+        mTimeAdapter = new AdapterWithCustomItem(getActivity(), mTimes);
+        mTimeSpinner = view.findViewById(R.id.crime_date_time);
+        mTimeSpinner.setAdapter(mTimeAdapter);
+
         updateDate();
 
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +105,26 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mTimeButton.setOnClickListener(new View.OnClickListener() {
+        mTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
-                dialog.show(fragmentManager, DIALOG_TIME);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (mTimeItemWasClicked) {
+                    if (position == mTimes.length-1) {
+                        FragmentManager fragmentManager = getFragmentManager();
+                        TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                        dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                        dialog.show(fragmentManager, DIALOG_TIME);
+                    } else {
+                        mCrime.setDate(changeTimeNotDate(mCrime.getDate(), HOURS[position], 0));
+                        updateDate();
+                    }
+                } else {
+                    mTimeItemWasClicked = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -128,6 +159,45 @@ public class CrimeFragment extends Fragment {
 
     private void updateDate() {
         mDateButton.setText(DateFormat.format("EEEE, MMM d, yyyy", mCrime.getDate()));
-        mTimeButton.setText(DateFormat.format("HH:mm", mCrime.getDate()));
+        mTimeAdapter.setCustomText((String)DateFormat.format("HH:mm", mCrime.getDate()));
+    }
+
+    private Date changeTimeNotDate(Date date, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        return calendar.getTime();
+    }
+
+    private class AdapterWithCustomItem extends ArrayAdapter<String>
+    {
+        private String[] mOptions;
+
+        private String mCustomText = "";
+
+        public AdapterWithCustomItem(Context context, String[] options){
+            super(context, android.R.layout.simple_spinner_dropdown_item, options);
+            mOptions = options;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+            TextView textView = view.findViewById(android.R.id.text1);
+            textView.setText(mCustomText);
+
+            return view;
+        }
+
+        public void setCustomText(String customText) {
+            mCustomText = customText;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return super.getDropDownView(position, convertView, parent);
+        }
     }
 }
