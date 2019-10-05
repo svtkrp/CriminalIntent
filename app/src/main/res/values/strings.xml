@@ -20,6 +20,10 @@
     <string name="new_crime">New crime</string>
     <string name="show_subtitle">Show subtitle</string>
     <string name="hide_subtitle">Hide subtitle</string>
-    <string name="subtitle_format">%1$d crimes</string>
     <string name="delete_crime">Delete crime</string>
+    
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$d crime</item>
+        <item quantity="other">%1$d crimes</item>
+    </plurals>
 </resources>
