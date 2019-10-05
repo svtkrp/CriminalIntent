@@ -42,4 +42,13 @@ public class Crime {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Crime)) return false;
+        Crime crime = (Crime) obj;
+        return mId.equals(crime.mId);
+    }
 }
