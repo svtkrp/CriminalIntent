@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.book.criminalintent.database.CrimeBaseHelper;
 import com.book.criminalintent.database.CrimeCursorWrapper;
-import com.book.criminalintent.database.CrimeDbSchema;
 import com.book.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
@@ -77,7 +76,11 @@ public class CrimeLab {
     }
 
     public void deleteCrime(Crime crime) {
-        //mCrimes.remove(crime);
+        String uuidString = crime.getId().toString();
+        mDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + " = ?",
+                new String[] {uuidString}
+        );
     }
 
     public void updateCrime(Crime crime) {
@@ -85,7 +88,8 @@ public class CrimeLab {
         ContentValues values = getContentValues(crime);
         mDatabase.update(CrimeTable.NAME, values,
                 CrimeTable.Cols.UUID + " = ?",
-                new String[] {uuidString});
+                new String[] {uuidString}
+        );
     }
 
     private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
