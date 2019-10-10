@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -59,6 +60,7 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
 
     private Button mSuspectButton;
+    private ImageButton mDeleteSuspectButton;
     private Button mReportButton;
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -168,8 +170,21 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mDeleteSuspectButton = view.findViewById(R.id.crime_suspect_delete);
+        mDeleteSuspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCrime.setSuspect(null);
+                mSuspectButton.setText(R.string.crime_suspect_text);
+                mDeleteSuspectButton.setVisibility(GONE);
+            }
+        });
+
         if (mCrime.getSuspect() != null) {
-            mSuspectButton.setText(mCrime.getSuspect());
+            mSuspectButton.setText(getString(R.string.crime_suspect_chosen_text,
+                    mCrime.getSuspect()));
+        } else {
+            mDeleteSuspectButton.setVisibility(GONE);
         }
 
         PackageManager packageManager = getActivity().getPackageManager();
@@ -223,7 +238,8 @@ public class CrimeFragment extends Fragment {
                 cursor.moveToFirst();
                 String suspect = cursor.getString(0);
                 mCrime.setSuspect(suspect);
-                mSuspectButton.setText(suspect);
+                mSuspectButton.setText(getString(R.string.crime_suspect_chosen_text, suspect));
+                mDeleteSuspectButton.setVisibility(VISIBLE);
             } finally {
                 cursor.close();
             }

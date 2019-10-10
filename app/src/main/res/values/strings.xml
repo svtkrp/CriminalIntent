@@ -28,6 +28,7 @@
     </plurals>
 
     <string name="crime_suspect_text">Choose suspect</string>
+    <string name="crime_suspect_chosen_text">Suspect is %s</string>
     <string name="crime_report_text">Send crime report</string>
 
     <string name="crime_report">%1$s!

@@ -58,12 +58,30 @@
 
     <Button
         android:id="@+id/crime_suspect"
-        android:layout_width="match_parent"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginRight="@dimen/small_margin"
+        android:background="@color/colorPrimary"
         android:text="@string/crime_suspect_text"
-        app:layout_constraintTop_toBottomOf="@id/crime_solved"
+        android:textColor="@android:color/white"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toLeftOf="@id/crime_suspect_delete"
+        app:layout_constraintTop_toBottomOf="@id/crime_solved" />
+
+    <ImageButton
+        android:id="@+id/crime_suspect_delete"
+        android:layout_width="64dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/small_margin"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_menu_delete"
+        app:layout_constraintBottom_toBottomOf="@id/crime_suspect"
+        app:layout_constraintLeft_toRightOf="@id/crime_suspect"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crime_solved" />
 
     <Button
         android:id="@+id/crime_report"
