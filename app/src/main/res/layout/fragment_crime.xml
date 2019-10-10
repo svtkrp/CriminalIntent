@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,16 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crime_title_label"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/crime_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/crime_title_hint"
-        app:layout_constraintTop_toBottomOf="@id/crime_title_label"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crime_title_label" />
 
     <TextView
         android:id="@+id/crime_details_label"
@@ -28,33 +27,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crime_details_label"
-        app:layout_constraintTop_toBottomOf="@id/crime_title"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crime_title" />
 
     <Button
         android:id="@+id/crime_date_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/crime_details_label"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/crime_date_time"/>
+        app:layout_constraintRight_toLeftOf="@id/crime_date_time"
+        app:layout_constraintTop_toBottomOf="@id/crime_details_label" />
 
     <Spinner
         android:id="@+id/crime_date_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/crime_details_label"
+        app:layout_constraintBottom_toBottomOf="@id/crime_date_date"
         app:layout_constraintLeft_toRightOf="@id/crime_date_date"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/crime_date_date"/>
+        app:layout_constraintTop_toBottomOf="@id/crime_details_label" />
 
     <CheckBox
         android:id="@+id/crime_solved"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crime_solved_label"
-        app:layout_constraintTop_toBottomOf="@id/crime_date_date"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crime_date_date" />
 
     <Button
         android:id="@+id/crime_suspect"
@@ -63,21 +62,24 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/small_margin"
         android:layout_marginRight="@dimen/small_margin"
-        android:background="@color/colorPrimary"
+        android:background="#FAFAFA"
+        android:gravity="left|center_vertical"
         android:text="@string/crime_suspect_text"
-        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/crime_suspect_delete"
         app:layout_constraintTop_toBottomOf="@id/crime_solved" />
 
     <ImageButton
         android:id="@+id/crime_suspect_delete"
-        android:layout_width="64dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/small_margin"
-        android:background="@color/colorPrimary"
-        android:src="@drawable/ic_menu_delete"
+        android:background="#FAFAFA"
+        android:padding="4dp"
+        android:src="@drawable/ic_clear_holo_light"
         app:layout_constraintBottom_toBottomOf="@id/crime_suspect"
         app:layout_constraintLeft_toRightOf="@id/crime_suspect"
         app:layout_constraintRight_toRightOf="parent"
@@ -88,8 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/crime_report_text"
-        app:layout_constraintTop_toBottomOf="@id/crime_suspect"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crime_suspect" />
 
 </android.support.constraint.ConstraintLayout>
