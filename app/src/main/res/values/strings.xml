@@ -8,6 +8,9 @@
     <string name="last_crime_button">Last</string>
     <string name="date_picker_title">Date of crime:</string>
     <string name="time_picker_title">Time of crime:</string>
+    <string name="photo_dialog_title">Photo of crime:</string>
+    <string name="delete_photo_button">Delete</string>
+    <string name="photo_was_deleted_text">You deleted photo of crime</string>
 
     <string-array name="times">
         <item>Early morning</item>

@@ -34,6 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.Calendar;
@@ -48,11 +49,13 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_TIME = "DialogTime";
+    private static final String DIALOG_PHOTO = "DialogPhoto";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_TIME = 1;
     private static final int REQUEST_CONTACT = 2;
     private static final int REQUEST_PHOTO = 3;
+    private static final int REQUEST_PHOTO_WAS_DELETED = 4;
 
     private static final int[] HOURS = {8, 12, 15, 17};
 
@@ -221,6 +224,15 @@ public class CrimeFragment extends Fragment {
 
         mPhotoView = view.findViewById(R.id.crime_photo);
         updatePhotoView();
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                PhotoFragment dialog = PhotoFragment.newInstance(mCrime.getPhotoFilename());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_PHOTO_WAS_DELETED);
+                dialog.show(fragmentManager, DIALOG_PHOTO);
+            }
+        });
 
         mPhotoButton = view.findViewById(R.id.crime_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -285,6 +297,10 @@ public class CrimeFragment extends Fragment {
                     "com.book.criminalintent.fileprovider", mPhotoFile);
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updatePhotoView();
+        } else if (requestCode == REQUEST_PHOTO_WAS_DELETED) {
+            updatePhotoView();
+            Toast.makeText(getActivity(),
+                    R.string.photo_was_deleted_text, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -343,12 +359,9 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updatePhotoView() {
-        if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
-        } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-        }
+        Bitmap bitmap = PictureUtils.getScaledBitmapIfFileExists(mPhotoFile, getActivity());
+        mPhotoView.setEnabled(bitmap != null);
+        mPhotoView.setImageBitmap(bitmap);
     }
 
     private class AdapterWithCustomItem extends ArrayAdapter<String>

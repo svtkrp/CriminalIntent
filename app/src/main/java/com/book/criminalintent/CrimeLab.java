@@ -71,9 +71,12 @@ public class CrimeLab {
     }
 
     public File getPhotoFile(Crime crime) {
-        File filesDir = mContext.getFilesDir();
-        return new File(filesDir, crime.getPhotoFilename());
+        return getPhotoFile(crime.getPhotoFilename());
+    }
 
+    public File getPhotoFile(String filename) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, filename);
     }
 
     public void addCrime(Crime crime) {
