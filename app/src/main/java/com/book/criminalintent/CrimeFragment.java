@@ -77,6 +77,13 @@ public class CrimeFragment extends Fragment {
     private ImageButton mDeleteSuspectButton;
     private Button mReportButton;
 
+    private Callbacks mCallbacks;
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+        void onCrimeDeleted(Crime crime);
+    }
+
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
@@ -84,6 +91,12 @@ public class CrimeFragment extends Fragment {
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
     }
 
     @Override
@@ -117,6 +130,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+                updateCrime();
             }
 
             @Override
@@ -155,6 +169,7 @@ public class CrimeFragment extends Fragment {
                     } else {
                         mCrime.setDate(changeTimeNotDate(mCrime.getDate(), HOURS[position], 0));
                         updateDate();
+                        updateCrime();
                     }
                 } else {
                     mTimeItemWasClicked = true;
@@ -172,6 +187,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                updateCrime();
             }
         });
 
@@ -192,6 +208,7 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSuspect(null);
                 mSuspectButton.setText(R.string.crime_suspect_text);
                 mDeleteSuspectButton.setVisibility(GONE);
+                updateCrime();
             }
         });
 
@@ -301,7 +318,9 @@ public class CrimeFragment extends Fragment {
             updatePhotoView();
             Toast.makeText(getActivity(),
                     R.string.photo_was_deleted_text, Toast.LENGTH_LONG).show();
-        }
+        } else return;
+
+        updateCrime();
     }
 
     @Override
@@ -315,11 +334,22 @@ public class CrimeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.delete_crime:
                 CrimeLab.get(getActivity()).deleteCrime(mCrime);
-                getActivity().finish();
+                mCallbacks.onCrimeDeleted(mCrime);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
     }
 
     private void updateDate() {

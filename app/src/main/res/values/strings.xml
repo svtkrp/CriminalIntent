@@ -11,6 +11,7 @@
     <string name="photo_dialog_title">Photo of crime:</string>
     <string name="delete_photo_button">Delete</string>
     <string name="photo_was_deleted_text">You deleted photo of crime</string>
+    <string name="text_instead_detail_fragment">Choose crime to see its details</string>
 
     <string-array name="times">
         <item>Early morning</item>
