@@ -1,12 +1,12 @@
 package com.book.criminalintent;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,12 +20,15 @@ import android.text.format.DateFormat;
 
 import java.util.List;
 
+import android.support.v7.widget.helper.ItemTouchHelper;
+
 public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
     private boolean mSubtitleVisible;
 
@@ -35,6 +38,7 @@ public class CrimeListFragment extends Fragment {
 
     public interface Callbacks {
         void onCrimeSelected(Crime crime);
+        void onCrimeTouchDeleted(Crime crime);
     }
 
     @Override
@@ -141,32 +145,42 @@ public class CrimeListFragment extends Fragment {
     }
 
     public void updateUI() {
+        updateListUI();
+        updateCountUI();
+    }
+
+    private void updateListUI() {
         List<Crime> crimes = CrimeLab.get(getActivity()).getCrimes();
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+            mItemTouchHelper = new ItemTouchHelper(callback);
+            mItemTouchHelper.attachToRecyclerView(mCrimeRecyclerView);
         } else {
             mAdapter.setCrimes(crimes);
             mAdapter.notifyDataSetChanged();
         }
-
-        updateSubtitle();
-
-        if (crimes.size() == 0) {
-            mNewCrimeButton.setVisibility(View.VISIBLE);
-        } else {
-            mNewCrimeButton.setVisibility(View.GONE);
-        }
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private void updateCountUI() {
+        updateSubtitle();
+        mNewCrimeButton.setVisibility
+                (CrimeLab.get(getActivity()).getCrimes().size() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private class CrimeHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, ItemTouchHelperViewHolder {
 
         private Crime mCrime;
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private ImageView mSolvedImageView;
+
+        private int mSelectedColor;
+        private int mNormalColor;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
@@ -176,6 +190,13 @@ public class CrimeListFragment extends Fragment {
             mTitleTextView = itemView.findViewById(R.id.crime_title);
             mDateTextView = itemView.findViewById(R.id.crime_date);
             mSolvedImageView = itemView.findViewById(R.id.crime_solved);
+
+            TypedValue a1 = new TypedValue();
+            getActivity().getTheme().resolveAttribute(android.R.attr.colorFocusedHighlight, a1, true);
+            mSelectedColor = a1.data;
+            TypedValue a2 = new TypedValue();
+            getActivity().getTheme().resolveAttribute(android.R.attr.windowBackground, a2, true);
+            mNormalColor = a2.data;
         }
 
         public void bind(Crime crime) {
@@ -189,9 +210,20 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View view) {
             mCallbacks.onCrimeSelected(mCrime);
         }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(mSelectedColor);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(mNormalColor);
+        }
     }
 
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>
+            implements ItemTouchHelperAdapter {
 
         private List<Crime> mCrimes;
 
@@ -219,5 +251,78 @@ public class CrimeListFragment extends Fragment {
         public void setCrimes(List<Crime> crimes) {
             mCrimes = crimes;
         }
+
+        @Override
+        public void onItemDismiss(int position) {
+            Crime crime = mCrimes.get(position);
+            CrimeLab.get(getActivity()).deleteCrime(crime);
+            mCrimes.remove(position);
+            notifyItemRemoved(position);
+            updateCountUI();
+            mCallbacks.onCrimeTouchDeleted(crime);
+        }
+    }
+
+    private class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
+
+        private final ItemTouchHelperAdapter mAdapter;
+
+        public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+            mAdapter = adapter;
+        }
+
+        @Override
+        public boolean isLongPressDragEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isItemViewSwipeEnabled() {
+            return true;
+        }
+
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView,
+                                    RecyclerView.ViewHolder viewHolder) {
+            final int dragFlags = 0;
+            final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+            return makeMovementFlags(dragFlags, swipeFlags);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source,
+                              RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
+            mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+        }
+
+        @Override
+        public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+            if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+                itemViewHolder.onItemSelected();
+            }
+            super.onSelectedChanged(viewHolder, actionState);
+        }
+
+        @Override
+        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+            ItemTouchHelperViewHolder itemViewHolder = (ItemTouchHelperViewHolder) viewHolder;
+            itemViewHolder.onItemClear();
+        }
+    }
+
+    private interface ItemTouchHelperAdapter {
+        void onItemDismiss(int position);
+    }
+
+    private interface ItemTouchHelperViewHolder {
+        void onItemSelected();
+        void onItemClear();
     }
 }

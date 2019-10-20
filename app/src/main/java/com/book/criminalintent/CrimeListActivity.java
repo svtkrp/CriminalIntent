@@ -6,10 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.UUID;
+
 public class CrimeListActivity extends SingleFragmentActivity
     implements CrimeListFragment.Callbacks, CrimeFragment.Callbacks {
 
+    private static final String SAVED_CRIME_ID = "crime_id";
+
     private TextView mTextInsteadDetailFragment;
+    private UUID mSelectedCrimeId;
 
     @Override
     protected Fragment createFragment() {
@@ -28,11 +33,16 @@ public class CrimeListActivity extends SingleFragmentActivity
             startActivity(intent);
         } else {
             mTextInsteadDetailFragment.setVisibility(View.GONE);
-            Fragment newDetail = CrimeFragment.newInstance(crime.getId());
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.detail_fragment_container, newDetail)
-                    .commit();
+            mSelectedCrimeId = crime.getId();
+            fillDetailContainer(mSelectedCrimeId);
         }
+    }
+
+    private void fillDetailContainer(UUID crimeId) {
+        Fragment newDetail = CrimeFragment.newInstance(crimeId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.detail_fragment_container, newDetail)
+                .commit();
     }
 
     @Override
@@ -45,20 +55,51 @@ public class CrimeListActivity extends SingleFragmentActivity
     @Override
     public void onCrimeDeleted(Crime crime) {
         onCrimeUpdated(crime);
+        onSelectedCrimeDeleted();
+    }
+
+    @Override
+    public void onCrimeTouchDeleted(Crime crime) {
+        if (crime.getId().equals(mSelectedCrimeId)) {
+            onSelectedCrimeDeleted();
+        } else {
+            // do nothing
+        }
+    }
+
+    private void onSelectedCrimeDeleted() {
         CrimeFragment fragment = (CrimeFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detail_fragment_container);
         if (fragment != null) getSupportFragmentManager().beginTransaction()
-                .detach(fragment)
+                // detach(fragment) works, but app is failed when screen rotation
+                .remove(fragment)
                 .commit();
         mTextInsteadDetailFragment.setVisibility(View.VISIBLE);
+        mSelectedCrimeId = null;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (findViewById(R.id.detail_fragment_container) != null) {
+            if (savedInstanceState != null) {
+                mSelectedCrimeId = (UUID) savedInstanceState.getSerializable(SAVED_CRIME_ID);
+            } else {
+                mSelectedCrimeId = null;
+            }
             mTextInsteadDetailFragment = findViewById(R.id.text_instead_detail_fragment);
-            mTextInsteadDetailFragment.setVisibility(View.VISIBLE);
+            if (mSelectedCrimeId == null) {
+                mTextInsteadDetailFragment.setVisibility(View.VISIBLE);
+            } else {
+                mTextInsteadDetailFragment.setVisibility(View.GONE);
+                fillDetailContainer(mSelectedCrimeId);
+            }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_CRIME_ID, mSelectedCrimeId);
     }
 }
