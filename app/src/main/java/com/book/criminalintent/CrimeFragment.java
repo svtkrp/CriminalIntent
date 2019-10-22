@@ -206,14 +206,14 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mCrime.setSuspect(null);
-                mSuspectButton.setText(R.string.crime_suspect_text);
+                mSuspectButton.setText(R.string.crime_suspect_button);
                 mDeleteSuspectButton.setVisibility(GONE);
                 updateCrime();
             }
         });
 
         if (mCrime.getSuspect() != null) {
-            mSuspectButton.setText(getString(R.string.crime_suspect_chosen_text,
+            mSuspectButton.setText(getString(R.string.crime_suspect_chosen_button,
                     mCrime.getSuspect()));
         } else {
             mDeleteSuspectButton.setVisibility(GONE);
@@ -233,7 +233,7 @@ public class CrimeFragment extends Fragment {
                 Intent intent = builder.setType("text/plain")
                         .setText(getCrimeReport())
                         .setSubject(getString(R.string.crime_report_subject))
-                        .setChooserTitle(R.string.send_report)
+                        .setChooserTitle(R.string.send_report_title)
                         .createChooserIntent();
                 startActivity(intent);
             }
@@ -304,7 +304,7 @@ public class CrimeFragment extends Fragment {
                 cursor.moveToFirst();
                 String suspect = cursor.getString(0);
                 mCrime.setSuspect(suspect);
-                mSuspectButton.setText(getString(R.string.crime_suspect_chosen_text, suspect));
+                mSuspectButton.setText(getString(R.string.crime_suspect_chosen_button, suspect));
                 mDeleteSuspectButton.setVisibility(VISIBLE);
             } finally {
                 cursor.close();

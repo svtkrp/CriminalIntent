@@ -101,9 +101,9 @@ public class CrimeListFragment extends Fragment {
 
         MenuItem subtitleItem = menu.findItem(R.id.show_subtitle);
         if (mSubtitleVisible) {
-            subtitleItem.setTitle(R.string.hide_subtitle);
+            subtitleItem.setTitle(R.string.hide_subtitle_button);
         } else {
-            subtitleItem.setTitle(R.string.show_subtitle);
+            subtitleItem.setTitle(R.string.show_subtitle_button);
         }
     }
 

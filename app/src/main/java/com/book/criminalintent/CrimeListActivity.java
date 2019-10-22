@@ -13,7 +13,7 @@ public class CrimeListActivity extends SingleFragmentActivity
 
     private static final String SAVED_CRIME_ID = "crime_id";
 
-    private TextView mTextInsteadDetailFragment;
+    private TextView mTextInsteadDetailCrime;
     private UUID mSelectedCrimeId;
 
     @Override
@@ -32,7 +32,7 @@ public class CrimeListActivity extends SingleFragmentActivity
             Intent intent = CrimePagerActivity.newIntent(this, crime.getId());
             startActivity(intent);
         } else {
-            mTextInsteadDetailFragment.setVisibility(View.GONE);
+            mTextInsteadDetailCrime.setVisibility(View.GONE);
             mSelectedCrimeId = crime.getId();
             fillDetailContainer(mSelectedCrimeId);
         }
@@ -74,7 +74,7 @@ public class CrimeListActivity extends SingleFragmentActivity
                 // detach(fragment) works, but app is failed when screen rotation
                 .remove(fragment)
                 .commit();
-        mTextInsteadDetailFragment.setVisibility(View.VISIBLE);
+        mTextInsteadDetailCrime.setVisibility(View.VISIBLE);
         mSelectedCrimeId = null;
     }
 
@@ -87,11 +87,11 @@ public class CrimeListActivity extends SingleFragmentActivity
             } else {
                 mSelectedCrimeId = null;
             }
-            mTextInsteadDetailFragment = findViewById(R.id.text_instead_detail_fragment);
+            mTextInsteadDetailCrime = findViewById(R.id.text_instead_detail_crime);
             if (mSelectedCrimeId == null) {
-                mTextInsteadDetailFragment.setVisibility(View.VISIBLE);
+                mTextInsteadDetailCrime.setVisibility(View.VISIBLE);
             } else {
-                mTextInsteadDetailFragment.setVisibility(View.GONE);
+                mTextInsteadDetailCrime.setVisibility(View.GONE);
                 fillDetailContainer(mSelectedCrimeId);
             }
         }

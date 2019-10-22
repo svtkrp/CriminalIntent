@@ -1,18 +1,29 @@
 <resources>
     <string name="app_name">CriminalIntent</string>
-    <string name="crime_title_hint">Enter a title for the crime...</string>
-    <string name="crime_title_label">Title</string>
-    <string name="crime_details_label">Details</string>
-    <string name="crime_solved_label">Solved</string>
+
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$d crime</item>
+        <item quantity="other">%1$d crimes</item>
+    </plurals>
+    <string name="show_subtitle_button">Show subtitle</string>
+    <string name="hide_subtitle_button">Hide subtitle</string>
+    <string name="new_crime_button">New crime</string>
+    <string name="text_instead_detail_crime">Choose crime to see its details</string>
+
+    <string name="delete_crime_button">Delete crime</string>
     <string name="first_crime_button">First</string>
     <string name="last_crime_button">Last</string>
-    <string name="date_picker_title">Date of crime:</string>
-    <string name="time_picker_title">Time of crime:</string>
-    <string name="photo_dialog_title">Photo of crime:</string>
-    <string name="delete_photo_button">Delete</string>
-    <string name="photo_was_deleted_text">You deleted photo of crime</string>
-    <string name="text_instead_detail_fragment">Choose crime to see its details</string>
 
+    <string name="crime_title_hint">Enter a title for the crime...</string>
+    <string name="crime_title_label">Title</string>
+
+    <string name="crime_details_label">Details</string>
+
+    <string name="crime_solved_label">Solved</string>
+
+    <string name="date_picker_title">Date of crime:</string>
+
+    <string name="time_picker_title">Time of crime:</string>
     <string-array name="times">
         <item>Early morning</item>
         <item>Late morning</item>
@@ -21,20 +32,14 @@
         <item>Pick a time...</item>
     </string-array>
 
-    <string name="new_crime">New crime</string>
-    <string name="show_subtitle">Show subtitle</string>
-    <string name="hide_subtitle">Hide subtitle</string>
-    <string name="delete_crime">Delete crime</string>
-    
-    <plurals name="subtitle_plural">
-        <item quantity="one">%1$d crime</item>
-        <item quantity="other">%1$d crimes</item>
-    </plurals>
+    <string name="photo_dialog_title">Photo of crime:</string>
+    <string name="delete_photo_button">Delete</string>
+    <string name="photo_was_deleted_text">You deleted photo of crime</string>
 
-    <string name="crime_suspect_text">Choose suspect...</string>
-    <string name="crime_suspect_chosen_text">Suspect is %s</string>
-    <string name="crime_report_text">Send crime report</string>
+    <string name="crime_suspect_button">Choose suspect...</string>
+    <string name="crime_suspect_chosen_button">Suspect is %s</string>
 
+    <string name="crime_report_button">Send crime report</string>
     <string name="crime_report">%1$s!
         The crime was discovered on %2$s. %3$s, and %4$s
     </string>
@@ -43,5 +48,5 @@
     <string name="crime_report_no_suspect">there is no suspect.</string>
     <string name="crime_report_suspect">the suspect is %s.</string>
     <string name="crime_report_subject">CriminalIntent Crime Report</string>
-    <string name="send_report">Send crime report via</string>
+    <string name="send_report_title">Send crime report via</string>
 </resources>
