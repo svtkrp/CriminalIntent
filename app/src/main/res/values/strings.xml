@@ -8,6 +8,7 @@
     <string name="show_subtitle_button">Show subtitle</string>
     <string name="hide_subtitle_button">Hide subtitle</string>
     <string name="new_crime_button">New crime</string>
+    <string name="date_format_list_item">EEEE, MMM d, yyyy, \'at\' HH:mm</string>
     <string name="text_instead_detail_crime">Choose crime to see its details</string>
 
     <string name="delete_crime_button">Delete crime</string>
@@ -22,8 +23,10 @@
     <string name="crime_solved_label">Solved</string>
 
     <string name="date_picker_title">Date of crime:</string>
+    <string name="date_date_format_detail_crime">EEEE, MMM d, yyyy</string>
 
     <string name="time_picker_title">Time of crime:</string>
+    <string name="date_time_format_detail_crime" translatable="false">HH:mm</string>
     <string-array name="times">
         <item>Early morning</item>
         <item>Late morning</item>
@@ -43,6 +46,8 @@
     <string name="crime_report">%1$s!
         The crime was discovered on %2$s. %3$s, and %4$s
     </string>
+    <string name="title_null_report">(Untitled)</string>
+    <string name="date_format_report">EEEE, MMM d</string>
     <string name="crime_report_solved">The case is solved</string>
     <string name="crime_report_unsolved">The case is not solved</string>
     <string name="crime_report_no_suspect">there is no suspect.</string>

@@ -1,2 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Преступное намерение</string>
+
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$d преступление</item>
+        <item quantity="few">%1$d преступления</item>
+        <item quantity="many">%1$d преступлений</item>
+    </plurals>
+    <string name="show_subtitle_button">Отобразить подзаголовок</string>
+    <string name="hide_subtitle_button">Скрыть подзаголовок</string>
+    <string name="new_crime_button">Новое преступление</string>
+    <string name="date_format_list_item">d MMM yyyy (EEEE) \'в\' HH:mm</string>
+    <string name="text_instead_detail_crime">Выберите преступление, чтобы увидеть его детальное описание</string>
+
+    <string name="delete_crime_button">Удалить преступление</string>
+    <string name="first_crime_button">Первое</string>
+    <string name="last_crime_button">Последнее</string>
+
+    <string name="crime_title_hint">Введите заголовок для преступления...</string>
+    <string name="crime_title_label">Заголовок</string>
+
+    <string name="crime_details_label">Детали</string>
+
+    <string name="crime_solved_label">Раскрыто</string>
+
+    <string name="date_picker_title">Дата преступления:</string>
+    <string name="date_date_format_detail_crime">EEEE, d MMM yyyy</string>
+
+    <string name="time_picker_title">Время преступления:</string>
+    <string-array name="times">
+        <item>Рано утром</item>
+        <item>Поздно утром</item>
+        <item>Рано днем</item>
+        <item>Поздно днем</item>
+        <item>Выбрать время...</item>
+    </string-array>
+
+    <string name="photo_dialog_title">Фото преступления:</string>
+    <string name="delete_photo_button">Удалить</string>
+    <string name="photo_was_deleted_text">Вы удалили фото преступления</string>
+
+    <string name="crime_suspect_button">Выбрать подозреваемого...</string>
+    <string name="crime_suspect_chosen_button">Подозревается %s</string>
+
+    <string name="crime_report_button">Отправить отчет о преступлении</string>
+    <string name="crime_report">%1$s!
+        Преступление было обнаружено %2$s. %3$s, и %4$s
+    </string>
+    <string name="title_null_report">(Без названия)</string>
+    <string name="date_format_report">d MMM (EEEE)</string>
+    <string name="crime_report_solved">Случай раскрыт</string>
+    <string name="crime_report_unsolved">Случай не раскрыт</string>
+    <string name="crime_report_no_suspect">подозреваемого нет.</string>
+    <string name="crime_report_suspect">под подозрением %s.</string>
+    <string name="crime_report_subject">Преступное намерение: отчет о преступлении</string>
+    <string name="send_report_title">Отправить отчет о преступлении с помощью</string>
+</resources>

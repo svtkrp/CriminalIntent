@@ -353,8 +353,10 @@ public class CrimeFragment extends Fragment {
     }
 
     private void updateDate() {
-        mDateButton.setText(DateFormat.format("EEEE, MMM d, yyyy", mCrime.getDate()));
-        mTimeAdapter.setCustomText((String)DateFormat.format("HH:mm", mCrime.getDate()));
+        mDateButton.setText(DateFormat.format
+                (getString(R.string.date_date_format_detail_crime), mCrime.getDate()));
+        mTimeAdapter.setCustomText((String)DateFormat.format
+                (getString(R.string.date_time_format_detail_crime), mCrime.getDate()));
     }
 
     private Date changeTimeNotDate(Date date, int hour, int minute) {
@@ -366,6 +368,8 @@ public class CrimeFragment extends Fragment {
     }
 
     private String getCrimeReport() {
+        String title = mCrime.getTitle();
+        if (title == null) title = getString(R.string.title_null_report);
 
         String solvedString;
         if (mCrime.isSolved()) {
@@ -374,7 +378,8 @@ public class CrimeFragment extends Fragment {
             solvedString = getString(R.string.crime_report_unsolved);
         }
 
-        String dateString = DateFormat.format("EEEE, MMM d", mCrime.getDate()).toString();
+        String dateString = DateFormat.format
+                (getString(R.string.date_format_report), mCrime.getDate()).toString();
 
         String suspect = mCrime.getSuspect();
         if (suspect == null) {
@@ -384,7 +389,7 @@ public class CrimeFragment extends Fragment {
         }
 
         String report = getString(R.string.crime_report,
-                mCrime.getTitle(), dateString, solvedString, suspect);
+                title, dateString, solvedString, suspect);
         return report;
     }
 
