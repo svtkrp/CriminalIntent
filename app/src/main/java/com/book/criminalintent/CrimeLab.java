@@ -30,15 +30,11 @@ public class CrimeLab {
     private CrimeLab(Context context) {
         mContext = context.getApplicationContext();
         mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
-
-
     }
 
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
-
         CrimeCursorWrapper cursor = queryCrimes(null, null);
-
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -48,7 +44,6 @@ public class CrimeLab {
         } finally {
             cursor.close();
         }
-
         return crimes;
     }
 
@@ -57,12 +52,10 @@ public class CrimeLab {
                 CrimeTable.Cols.UUID + " = ?",
                 new String[] {id.toString()}
         );
-
         try {
             if (cursor.getCount() == 0) {
                 return null;
             }
-
             cursor.moveToFirst();
             return cursor.getCrime();
         } finally {
@@ -81,7 +74,6 @@ public class CrimeLab {
 
     public void addCrime(Crime crime) {
         ContentValues values = getContentValues(crime);
-
         mDatabase.insert(CrimeTable.NAME, null, values);
     }
 
@@ -112,7 +104,6 @@ public class CrimeLab {
                 null,
                 null
         );
-
         return new CrimeCursorWrapper(cursor);
     }
 

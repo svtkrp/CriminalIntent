@@ -27,6 +27,31 @@ public class CrimeListActivity extends SingleFragmentActivity
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (findViewById(R.id.detail_fragment_container) != null) {
+            if (savedInstanceState != null) {
+                mSelectedCrimeId = (UUID) savedInstanceState.getSerializable(SAVED_CRIME_ID);
+            } else {
+                mSelectedCrimeId = null;
+            }
+            mTextInsteadDetailCrime = findViewById(R.id.text_instead_detail_crime);
+            if (mSelectedCrimeId == null) {
+                mTextInsteadDetailCrime.setVisibility(View.VISIBLE);
+            } else {
+                mTextInsteadDetailCrime.setVisibility(View.GONE);
+                fillDetailContainer(mSelectedCrimeId);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_CRIME_ID, mSelectedCrimeId);
+    }
+
+    @Override
     public void onCrimeSelected(Crime crime) {
         if (findViewById(R.id.detail_fragment_container) == null) {
             Intent intent = CrimePagerActivity.newIntent(this, crime.getId());
@@ -76,30 +101,5 @@ public class CrimeListActivity extends SingleFragmentActivity
                 .commit();
         mTextInsteadDetailCrime.setVisibility(View.VISIBLE);
         mSelectedCrimeId = null;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (findViewById(R.id.detail_fragment_container) != null) {
-            if (savedInstanceState != null) {
-                mSelectedCrimeId = (UUID) savedInstanceState.getSerializable(SAVED_CRIME_ID);
-            } else {
-                mSelectedCrimeId = null;
-            }
-            mTextInsteadDetailCrime = findViewById(R.id.text_instead_detail_crime);
-            if (mSelectedCrimeId == null) {
-                mTextInsteadDetailCrime.setVisibility(View.VISIBLE);
-            } else {
-                mTextInsteadDetailCrime.setVisibility(View.GONE);
-                fillDetailContainer(mSelectedCrimeId);
-            }
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(SAVED_CRIME_ID, mSelectedCrimeId);
     }
 }
